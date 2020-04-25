@@ -1,2 +1,2 @@
 # BouncyCastleHashTool
-.NET Core 3.1 WPF GUI front end to the Bouncy Castle Crypto Package For C#.
+.NET Core 3.0 WPF GUI front end to the Bouncy Castle Crypto Package For C#.

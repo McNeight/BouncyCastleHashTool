@@ -1,0 +1,489 @@
+﻿<Window x:Class="BouncyCastleHashTool.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BouncyCastleHashTool"
+        mc:Ignorable="d"
+        Title="Bouncy Castle Hash Tool" MinWidth="987">
+    <Window.Resources>
+        <local:BoolToCharacterCasingConverter x:Key="BoolToCharacterCasingConverter"/>
+        <local:LowerCaseToUpperCaseConverter x:Key="LowerCaseToUpperCaseConverter"/>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <GroupBox Header="File" Margin="10,10,10,5">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBox x:Name="tbFileName" Margin="10,11,5,11" HorizontalAlignment="Stretch" />
+                <Button x:Name="btnSelect" Content="..." Margin="5,10,10,10" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Stretch" MinWidth="12" MinHeight="20" Click="btnSelect_Click"/>
+            </Grid>
+        </GroupBox>
+        <GroupBox Header="Cyclic Check" Grid.Row="1" Margin="10,5,10,5">
+            <Grid>
+                <StackPanel Orientation="Horizontal" Margin="10,10,10,10">
+                    <CheckBox x:Name="cbCrc32" HorizontalAlignment="Left" Content="CRC32" Margin="5,0,5,0" />
+                    <CheckBox x:Name="cbCrc64" HorizontalAlignment="Left" Content="CRC64" Margin="5,0,5,0" />
+                </StackPanel>
+            </Grid>
+        </GroupBox>
+        <GroupBox Header="Digest" Grid.Row="2" Margin="10,5,10,5">
+            <ScrollViewer HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Disabled">
+                <Grid x:Name="gridDigest">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal" Margin="10,10,10,5">
+                        <CheckBox x:Name="cbBlake2b" HorizontalAlignment="Left" Content="BLAKE2b" Margin="5,0,5,0" VerticalAlignment="Center" />
+                        <CheckBox x:Name="cbBlake2s" HorizontalAlignment="Left" Content="BLAKE2s" Margin="5,0,5,0" VerticalAlignment="Center" />
+                        <CheckBox x:Name="cbDstu7564_256" HorizontalAlignment="Left" Content="Купина-256 (DSTU 7564:2014)" Margin="5,0,5,0" VerticalAlignment="Center" />
+                        <CheckBox x:Name="cbDstu7564_384" HorizontalAlignment="Left" Content="Купина-384 (DSTU 7564:2014)" Margin="5,0,5,0" VerticalAlignment="Center" />
+                        <CheckBox x:Name="cbDstu7564_512" HorizontalAlignment="Left" Content="Купина-512 (DSTU 7564:2014)" Margin="5,0,5,0" VerticalAlignment="Center" />
+                        <CheckBox x:Name="cbGost3411" HorizontalAlignment="Left" Content="ГОСТ Р 34.11-94" Margin="5,0,5,0" VerticalAlignment="Center" />
+                        <CheckBox x:Name="cbKeccak" HorizontalAlignment="Left" Content="Keccak" Margin="5,0,5,0" VerticalAlignment="Center" />
+                        <CheckBox x:Name="cbMd2" HorizontalAlignment="Left" Content="MD2" Margin="5,0,5,0" VerticalAlignment="Center" />
+                        <CheckBox x:Name="cbMd4" HorizontalAlignment="Left" Content="MD4" Margin="5,0,5,0" VerticalAlignment="Center" />
+                        <CheckBox x:Name="cbMd5" HorizontalAlignment="Left" Content="MD5" Margin="5,0,5,0" VerticalAlignment="Center" IsChecked="True" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="10,5,10,10" Grid.Row="1">
+                        <CheckBox x:Name="cbRipemd128" HorizontalAlignment="Left" Content="RIPEMD128" Margin="5,0,5,0" VerticalAlignment="Center" />
+                        <CheckBox x:Name="cbRipemd160" HorizontalAlignment="Left" Content="RIPEMD160" Margin="5,0,5,0" VerticalAlignment="Center" IsChecked="True" />
+                        <CheckBox x:Name="cbRipemd256" HorizontalAlignment="Left" Content="RIPEMD256" Margin="5,0,5,0" VerticalAlignment="Center" />
+                        <CheckBox x:Name="cbRipemd320" HorizontalAlignment="Left" Content="RIPEMD320" Margin="5,0,5,0" VerticalAlignment="Center" />
+                        <CheckBox x:Name="cbSha1" HorizontalAlignment="Left" Content="SHA1" Margin="5,0,5,0" VerticalAlignment="Center" IsChecked="True" />
+                        <CheckBox x:Name="cbSha224" HorizontalAlignment="Left" Content="SHA224" Margin="5,0,5,0" VerticalAlignment="Center" />
+                        <CheckBox x:Name="cbSha256" HorizontalAlignment="Left" Content="SHA256" Margin="5,0,5,0" VerticalAlignment="Center" IsChecked="True" />
+                        <CheckBox x:Name="cbSha384" HorizontalAlignment="Left" Content="SHA384" Margin="5,0,5,0" VerticalAlignment="Center" />
+                        <CheckBox x:Name="cbSha512" HorizontalAlignment="Left" Content="SHA512" Margin="5,0,5,0" VerticalAlignment="Center" />
+                        <CheckBox x:Name="cbSha3" HorizontalAlignment="Left" Content="SHA3" Margin="5,0,5,0" VerticalAlignment="Center" IsChecked="True" />
+                        <CheckBox x:Name="cbSm3" HorizontalAlignment="Left" Content="SM3" Margin="5,0,5,0" VerticalAlignment="Center" />
+                        <CheckBox x:Name="cbShake" HorizontalAlignment="Left" Content="Shake" Margin="5,0,5,0" VerticalAlignment="Center" />
+                        <CheckBox x:Name="cbTiger" HorizontalAlignment="Left" Content="Tiger" Margin="5,0,5,0" VerticalAlignment="Center" />
+                        <CheckBox x:Name="cbWhirlpool" HorizontalAlignment="Left" Content="Whirlpool" Margin="5,0,5,0" VerticalAlignment="Center" />
+                        <Button x:Name="btnAllDigests" HorizontalAlignment="Left" Content="Select All" Margin="5,0,5,0" VerticalAlignment="Center" Padding="5,1,5,1" Click="btnAllDigests_Click" />
+                    </StackPanel>
+                </Grid>
+            </ScrollViewer>
+        </GroupBox>
+        <GroupBox Header="Results" Grid.Row="3" Margin="10,5,10,10">
+            <ScrollViewer>
+                <Grid x:Name="gridResults">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition>
+                            <RowDefinition.Style>
+                                <Style TargetType="{x:Type RowDefinition}">
+                                    <Setter Property="Height" Value="Auto" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsChecked, ElementName=cbCrc32}" Value="False">
+                                            <Setter Property="Height" Value="0" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </RowDefinition.Style>
+                        </RowDefinition>
+                        <RowDefinition>
+                            <RowDefinition.Style>
+                                <Style TargetType="{x:Type RowDefinition}">
+                                    <Setter Property="Height" Value="Auto" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsChecked, ElementName=cbCrc64}" Value="False">
+                                            <Setter Property="Height" Value="0" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </RowDefinition.Style>
+                        </RowDefinition>
+                        <RowDefinition>
+                            <RowDefinition.Style>
+                                <Style TargetType="{x:Type RowDefinition}">
+                                    <Setter Property="Height" Value="Auto" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsChecked, ElementName=cbBlake2b}" Value="False">
+                                            <Setter Property="Height" Value="0" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </RowDefinition.Style>
+                        </RowDefinition>
+                        <RowDefinition>
+                            <RowDefinition.Style>
+                                <Style TargetType="{x:Type RowDefinition}">
+                                    <Setter Property="Height" Value="Auto" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsChecked, ElementName=cbBlake2s}" Value="False">
+                                            <Setter Property="Height" Value="0" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </RowDefinition.Style>
+                        </RowDefinition>
+                        <RowDefinition>
+                            <RowDefinition.Style>
+                                <Style TargetType="{x:Type RowDefinition}">
+                                    <Setter Property="Height" Value="Auto" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsChecked, ElementName=cbDstu7564_256}" Value="False">
+                                            <Setter Property="Height" Value="0" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </RowDefinition.Style>
+                        </RowDefinition>
+                        <RowDefinition>
+                            <RowDefinition.Style>
+                                <Style TargetType="{x:Type RowDefinition}">
+                                    <Setter Property="Height" Value="Auto" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsChecked, ElementName=cbDstu7564_384}" Value="False">
+                                            <Setter Property="Height" Value="0" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </RowDefinition.Style>
+                        </RowDefinition>
+                        <RowDefinition>
+                            <RowDefinition.Style>
+                                <Style TargetType="{x:Type RowDefinition}">
+                                    <Setter Property="Height" Value="Auto" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsChecked, ElementName=cbDstu7564_512}" Value="False">
+                                            <Setter Property="Height" Value="0" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </RowDefinition.Style>
+                        </RowDefinition>
+                        <RowDefinition>
+                            <RowDefinition.Style>
+                                <Style TargetType="{x:Type RowDefinition}">
+                                    <Setter Property="Height" Value="Auto" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsChecked, ElementName=cbGost3411}" Value="False">
+                                            <Setter Property="Height" Value="0" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </RowDefinition.Style>
+                        </RowDefinition>
+                        <RowDefinition>
+                            <RowDefinition.Style>
+                                <Style TargetType="{x:Type RowDefinition}">
+                                    <Setter Property="Height" Value="Auto" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsChecked, ElementName=cbKeccak}" Value="False">
+                                            <Setter Property="Height" Value="0" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </RowDefinition.Style>
+                        </RowDefinition>
+                        <RowDefinition>
+                            <RowDefinition.Style>
+                                <Style TargetType="{x:Type RowDefinition}">
+                                    <Setter Property="Height" Value="Auto" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsChecked, ElementName=cbMd2}" Value="False">
+                                            <Setter Property="Height" Value="0" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </RowDefinition.Style>
+                        </RowDefinition>
+                        <RowDefinition>
+                            <RowDefinition.Style>
+                                <Style TargetType="{x:Type RowDefinition}">
+                                    <Setter Property="Height" Value="Auto" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsChecked, ElementName=cbMd4}" Value="False">
+                                            <Setter Property="Height" Value="0" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </RowDefinition.Style>
+                        </RowDefinition>
+                        <RowDefinition>
+                            <RowDefinition.Style>
+                                <Style TargetType="{x:Type RowDefinition}">
+                                    <Setter Property="Height" Value="Auto" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsChecked, ElementName=cbMd5}" Value="False">
+                                            <Setter Property="Height" Value="0" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </RowDefinition.Style>
+                        </RowDefinition>
+                        <RowDefinition>
+                            <RowDefinition.Style>
+                                <Style TargetType="{x:Type RowDefinition}">
+                                    <Setter Property="Height" Value="Auto" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsChecked, ElementName=cbRipemd128}" Value="False">
+                                            <Setter Property="Height" Value="0" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </RowDefinition.Style>
+                        </RowDefinition>
+                        <RowDefinition>
+                            <RowDefinition.Style>
+                                <Style TargetType="{x:Type RowDefinition}">
+                                    <Setter Property="Height" Value="Auto" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsChecked, ElementName=cbRipemd160}" Value="False">
+                                            <Setter Property="Height" Value="0" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </RowDefinition.Style>
+                        </RowDefinition>
+                        <RowDefinition>
+                            <RowDefinition.Style>
+                                <Style TargetType="{x:Type RowDefinition}">
+                                    <Setter Property="Height" Value="Auto" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsChecked, ElementName=cbRipemd256}" Value="False">
+                                            <Setter Property="Height" Value="0" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </RowDefinition.Style>
+                        </RowDefinition>
+                        <RowDefinition>
+                            <RowDefinition.Style>
+                                <Style TargetType="{x:Type RowDefinition}">
+                                    <Setter Property="Height" Value="Auto" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsChecked, ElementName=cbRipemd320}" Value="False">
+                                            <Setter Property="Height" Value="0" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </RowDefinition.Style>
+                        </RowDefinition>
+                        <RowDefinition>
+                            <RowDefinition.Style>
+                                <Style TargetType="{x:Type RowDefinition}">
+                                    <Setter Property="Height" Value="Auto" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsChecked, ElementName=cbSha1}" Value="False">
+                                            <Setter Property="Height" Value="0" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </RowDefinition.Style>
+                        </RowDefinition>
+                        <RowDefinition>
+                            <RowDefinition.Style>
+                                <Style TargetType="{x:Type RowDefinition}">
+                                    <Setter Property="Height" Value="Auto" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsChecked, ElementName=cbSha224}" Value="False">
+                                            <Setter Property="Height" Value="0" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </RowDefinition.Style>
+                        </RowDefinition>
+                        <RowDefinition>
+                            <RowDefinition.Style>
+                                <Style TargetType="{x:Type RowDefinition}">
+                                    <Setter Property="Height" Value="Auto" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsChecked, ElementName=cbSha256}" Value="False">
+                                            <Setter Property="Height" Value="0" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </RowDefinition.Style>
+                        </RowDefinition>
+                        <RowDefinition>
+                            <RowDefinition.Style>
+                                <Style TargetType="{x:Type RowDefinition}">
+                                    <Setter Property="Height" Value="Auto" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsChecked, ElementName=cbSha384}" Value="False">
+                                            <Setter Property="Height" Value="0" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </RowDefinition.Style>
+                        </RowDefinition>
+                        <RowDefinition>
+                            <RowDefinition.Style>
+                                <Style TargetType="{x:Type RowDefinition}">
+                                    <Setter Property="Height" Value="Auto" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsChecked, ElementName=cbSha512}" Value="False">
+                                            <Setter Property="Height" Value="0" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </RowDefinition.Style>
+                        </RowDefinition>
+                        <RowDefinition>
+                            <RowDefinition.Style>
+                                <Style TargetType="{x:Type RowDefinition}">
+                                    <Setter Property="Height" Value="Auto" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsChecked, ElementName=cbSha3}" Value="False">
+                                            <Setter Property="Height" Value="0" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </RowDefinition.Style>
+                        </RowDefinition>
+                        <RowDefinition>
+                            <RowDefinition.Style>
+                                <Style TargetType="{x:Type RowDefinition}">
+                                    <Setter Property="Height" Value="Auto" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsChecked, ElementName=cbSm3}" Value="False">
+                                            <Setter Property="Height" Value="0" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </RowDefinition.Style>
+                        </RowDefinition>
+                        <RowDefinition>
+                            <RowDefinition.Style>
+                                <Style TargetType="{x:Type RowDefinition}">
+                                    <Setter Property="Height" Value="Auto" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsChecked, ElementName=cbShake}" Value="False">
+                                            <Setter Property="Height" Value="0" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </RowDefinition.Style>
+                        </RowDefinition>
+                        <RowDefinition>
+                            <RowDefinition.Style>
+                                <Style TargetType="{x:Type RowDefinition}">
+                                    <Setter Property="Height" Value="Auto" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsChecked, ElementName=cbTiger}" Value="False">
+                                            <Setter Property="Height" Value="0" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </RowDefinition.Style>
+                        </RowDefinition>
+                        <RowDefinition>
+                            <RowDefinition.Style>
+                                <Style TargetType="{x:Type RowDefinition}">
+                                    <Setter Property="Height" Value="Auto" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsChecked, ElementName=cbWhirlpool}" Value="False">
+                                            <Setter Property="Height" Value="0" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </RowDefinition.Style>
+                        </RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Orientation="Horizontal">
+                        <RadioButton x:Name="rbUpper" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5,5,5,5" Content="UPPERCASE" GroupName="case" IsChecked="True" />
+                        <RadioButton x:Name="rbLower" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5,5,5,5" Content="lowercase" GroupName="case" />
+                        <Button x:Name="btnCalculate" Content="Calculate" Margin="5,5,5,5" HorizontalAlignment="Stretch" Padding="5,1,5,1" Click="btnCalculate_Click" />
+                    </StackPanel>
+                    <TextBox x:Name="tbCrc32" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Row="1" MaxLines="1" AutoWordSelection="True" IsReadOnly="True" IsUndoEnabled="False" CharacterCasing="{Binding IsChecked, Converter={StaticResource BoolToCharacterCasingConverter}, ElementName=rbUpper}" FontFamily="Consolas" />
+                    <TextBox x:Name="tbCrc64" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Row="2" MaxLines="1" AutoWordSelection="True" IsReadOnly="True" IsUndoEnabled="False" CharacterCasing="{Binding IsChecked, Converter={StaticResource BoolToCharacterCasingConverter}, ElementName=rbUpper}" FontFamily="Consolas" />
+                    <TextBox x:Name="tbBlake2b" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Row="3" MaxLines="1" AutoWordSelection="True" IsReadOnly="True" IsUndoEnabled="False" CharacterCasing="{Binding IsChecked, Converter={StaticResource BoolToCharacterCasingConverter}, ElementName=rbUpper}" FontFamily="Consolas" />
+                    <TextBox x:Name="tbBlake2s" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Row="4" MaxLines="1" AutoWordSelection="True" IsReadOnly="True" IsUndoEnabled="False" CharacterCasing="{Binding IsChecked, Converter={StaticResource BoolToCharacterCasingConverter}, ElementName=rbUpper}" FontFamily="Consolas" />
+                    <TextBox x:Name="tbDstu7564_256" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Row="5" MaxLines="1" AutoWordSelection="True" IsReadOnly="True" IsUndoEnabled="False" CharacterCasing="{Binding IsChecked, Converter={StaticResource BoolToCharacterCasingConverter}, ElementName=rbUpper}" FontFamily="Consolas" />
+                    <TextBox x:Name="tbDstu7564_384" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Row="6" MaxLines="1" AutoWordSelection="True" IsReadOnly="True" IsUndoEnabled="False" CharacterCasing="{Binding IsChecked, Converter={StaticResource BoolToCharacterCasingConverter}, ElementName=rbUpper}" FontFamily="Consolas" />
+                    <TextBox x:Name="tbDstu7564_512" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Row="7" MaxLines="1" AutoWordSelection="True" IsReadOnly="True" IsUndoEnabled="False" CharacterCasing="{Binding IsChecked, Converter={StaticResource BoolToCharacterCasingConverter}, ElementName=rbUpper}" FontFamily="Consolas" />
+                    <TextBox x:Name="tbGost3411" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Row="8" MaxLines="1" AutoWordSelection="True" IsReadOnly="True" IsUndoEnabled="False" CharacterCasing="{Binding IsChecked, Converter={StaticResource BoolToCharacterCasingConverter}, ElementName=rbUpper}" FontFamily="Consolas" />
+                    <TextBox x:Name="tbKeccak" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Row="9" MaxLines="1" AutoWordSelection="True" IsReadOnly="True" IsUndoEnabled="False" CharacterCasing="{Binding IsChecked, Converter={StaticResource BoolToCharacterCasingConverter}, ElementName=rbUpper}" FontFamily="Consolas" />
+                    <TextBox x:Name="tbMd2" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Row="10" MaxLines="1" AutoWordSelection="True" IsReadOnly="True" IsUndoEnabled="False" CharacterCasing="{Binding IsChecked, Converter={StaticResource BoolToCharacterCasingConverter}, ElementName=rbUpper}" FontFamily="Consolas" />
+                    <TextBox x:Name="tbMd4" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Row="11" MaxLines="1" AutoWordSelection="True" IsReadOnly="True" IsUndoEnabled="False" CharacterCasing="{Binding IsChecked, Converter={StaticResource BoolToCharacterCasingConverter}, ElementName=rbUpper}" FontFamily="Consolas" />
+                    <TextBox x:Name="tbMd5" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Row="12" MaxLines="1" AutoWordSelection="True" IsReadOnly="True" IsUndoEnabled="False" CharacterCasing="{Binding IsChecked, Converter={StaticResource BoolToCharacterCasingConverter}, ElementName=rbUpper}" FontFamily="Consolas" />
+                    <TextBox x:Name="tbRipemd128" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Row="13" MaxLines="1" AutoWordSelection="True" IsReadOnly="True" IsUndoEnabled="False" CharacterCasing="{Binding IsChecked, Converter={StaticResource BoolToCharacterCasingConverter}, ElementName=rbUpper}" FontFamily="Consolas" />
+                    <TextBox x:Name="tbRipemd160" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Row="14" MaxLines="1" AutoWordSelection="True" IsReadOnly="True" IsUndoEnabled="False" CharacterCasing="{Binding IsChecked, Converter={StaticResource BoolToCharacterCasingConverter}, ElementName=rbUpper}" FontFamily="Consolas" />
+                    <TextBox x:Name="tbRipemd256" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Row="15" MaxLines="1" AutoWordSelection="True" IsReadOnly="True" IsUndoEnabled="False" CharacterCasing="{Binding IsChecked, Converter={StaticResource BoolToCharacterCasingConverter}, ElementName=rbUpper}" FontFamily="Consolas" />
+                    <TextBox x:Name="tbRipemd320" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Row="16" MaxLines="1" AutoWordSelection="True" IsReadOnly="True" IsUndoEnabled="False" CharacterCasing="{Binding IsChecked, Converter={StaticResource BoolToCharacterCasingConverter}, ElementName=rbUpper}" FontFamily="Consolas" />
+                    <TextBox x:Name="tbSha1" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Row="17" MaxLines="1" AutoWordSelection="True" IsReadOnly="True" IsUndoEnabled="False" CharacterCasing="{Binding IsChecked, Converter={StaticResource BoolToCharacterCasingConverter}, ElementName=rbUpper}" FontFamily="Consolas" />
+                    <TextBox x:Name="tbSha224" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Row="18" MaxLines="1" AutoWordSelection="True" IsReadOnly="True" IsUndoEnabled="False" CharacterCasing="{Binding IsChecked, Converter={StaticResource BoolToCharacterCasingConverter}, ElementName=rbUpper}" FontFamily="Consolas" MinWidth="431" />
+                    <TextBox x:Name="tbSha256" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Row="19" MaxLines="1" AutoWordSelection="True" IsReadOnly="True" IsUndoEnabled="False" CharacterCasing="{Binding IsChecked, Converter={StaticResource BoolToCharacterCasingConverter}, ElementName=rbUpper}" FontFamily="Consolas" MinWidth="431" />
+                    <TextBox x:Name="tbSha384" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Row="20" MaxLines="1" AutoWordSelection="True" IsReadOnly="True" IsUndoEnabled="False" CharacterCasing="{Binding IsChecked, Converter={StaticResource BoolToCharacterCasingConverter}, ElementName=rbUpper}" FontFamily="Consolas" />
+                    <TextBox x:Name="tbSha512" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Row="21" MaxLines="1" AutoWordSelection="True" IsReadOnly="True" IsUndoEnabled="False" CharacterCasing="{Binding IsChecked, Converter={StaticResource BoolToCharacterCasingConverter}, ElementName=rbUpper}" FontFamily="Consolas" />
+                    <TextBox x:Name="tbSha3" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Row="22" MaxLines="1" AutoWordSelection="True" IsReadOnly="True" IsUndoEnabled="False" CharacterCasing="{Binding IsChecked, Converter={StaticResource BoolToCharacterCasingConverter}, ElementName=rbUpper}" FontFamily="Consolas" />
+                    <TextBox x:Name="tbSm3" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Row="23" MaxLines="1" AutoWordSelection="True" IsReadOnly="True" IsUndoEnabled="False" CharacterCasing="{Binding IsChecked, Converter={StaticResource BoolToCharacterCasingConverter}, ElementName=rbUpper}" FontFamily="Consolas" />
+                    <TextBox x:Name="tbShake" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Row="24" MaxLines="1" AutoWordSelection="True" IsReadOnly="True" IsUndoEnabled="False" CharacterCasing="{Binding IsChecked, Converter={StaticResource BoolToCharacterCasingConverter}, ElementName=rbUpper}" FontFamily="Consolas" />
+                    <TextBox x:Name="tbTiger" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Row="25" MaxLines="1" AutoWordSelection="True" IsReadOnly="True" IsUndoEnabled="False" CharacterCasing="{Binding IsChecked, Converter={StaticResource BoolToCharacterCasingConverter}, ElementName=rbUpper}" FontFamily="Consolas" />
+                    <TextBox x:Name="tbWhirlpool" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Row="26" MaxLines="1" AutoWordSelection="True" IsReadOnly="True" IsUndoEnabled="False" CharacterCasing="{Binding IsChecked, Converter={StaticResource BoolToCharacterCasingConverter}, ElementName=rbUpper}" FontFamily="Consolas" />
+                    <Button x:Name="btnClear" Content="Clear" Grid.Column="1" HorizontalAlignment="Center" Padding="5,1,5,1" VerticalAlignment="Stretch" Click="btnClear_Click" />
+                    <Label x:Name="lblCrc32" Content="CRC32" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center"/>
+                    <Label x:Name="lblCrc64" Content="CRC64" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Center"/>
+                    <Label x:Name="lblBlake2b" Content="BLAKE2b" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Center"/>
+                    <Label x:Name="lblBlake2s" Content="BLAKE2s" Grid.Column="1" Grid.Row="4" HorizontalAlignment="Center"/>
+                    <Label x:Name="lblDstu7564_256" Content="Купина-256" Grid.Column="1" Grid.Row="5" HorizontalAlignment="Center"/>
+                    <Label x:Name="lblDstu7564_384" Content="Купина-384" Grid.Column="1" Grid.Row="6" HorizontalAlignment="Center"/>
+                    <Label x:Name="lblDstu7564_512" Content="Купина-512" Grid.Column="1" Grid.Row="7" HorizontalAlignment="Center"/>
+                    <Label x:Name="lblGost3411" Content="ГОСТ Р 34.11-94" Grid.Column="1" Grid.Row="8" HorizontalAlignment="Center"/>
+                    <Label x:Name="lblKeccak" Content="Keccak" Grid.Column="1" Grid.Row="9" HorizontalAlignment="Center"/>
+                    <Label x:Name="lblMd2" Content="MD2" Grid.Column="1" Grid.Row="10" HorizontalAlignment="Center"/>
+                    <Label x:Name="lblMd4" Content="MD4" Grid.Column="1" Grid.Row="11" HorizontalAlignment="Center"/>
+                    <Label x:Name="lblMd5" Content="MD5" Grid.Column="1" Grid.Row="12" HorizontalAlignment="Center"/>
+                    <Label x:Name="lblRipemd128" Content="RIPEMD128" Grid.Column="1" Grid.Row="13" HorizontalAlignment="Center"/>
+                    <Label x:Name="lblRipemd160" Content="RIPEMD160" Grid.Column="1" Grid.Row="14" HorizontalAlignment="Center"/>
+                    <Label x:Name="lblRipemd256" Content="RIPEMD256" Grid.Column="1" Grid.Row="15" HorizontalAlignment="Center"/>
+                    <Label x:Name="lblRipemd320" Content="RIPEMD320" Grid.Column="1" Grid.Row="16" HorizontalAlignment="Center"/>
+                    <Label x:Name="lblSha1" Content="SHA1" Grid.Column="1" Grid.Row="17" HorizontalAlignment="Center"/>
+                    <Label x:Name="lblSha224" Content="SHA224" Grid.Column="1" Grid.Row="18" HorizontalAlignment="Center"/>
+                    <Label x:Name="lblSha256" Content="SHA256" Grid.Column="1" Grid.Row="19" HorizontalAlignment="Center"/>
+                    <Label x:Name="lblSha384" Content="SHA384" Grid.Column="1" Grid.Row="20" HorizontalAlignment="Center"/>
+                    <Label x:Name="lblSha512" Content="SHA512" Grid.Column="1" Grid.Row="21" HorizontalAlignment="Center"/>
+                    <Label x:Name="lblSha3" Content="SHA3" Grid.Column="1" Grid.Row="22" HorizontalAlignment="Center"/>
+                    <Label x:Name="lblSm3" Content="SM3" Grid.Column="1" Grid.Row="23" HorizontalAlignment="Center"/>
+                    <Label x:Name="lblShake" Content="Shake" Grid.Column="1" Grid.Row="24" HorizontalAlignment="Center"/>
+                    <Label x:Name="lblTiger" Content="Tiger" Grid.Column="1" Grid.Row="25" HorizontalAlignment="Center"/>
+                    <Label x:Name="lblWhirlpool" Content="Whirlpool" Grid.Column="1" Grid.Row="26" HorizontalAlignment="Center"/>
+                    <Label Content="Comparison" Grid.Column="2" HorizontalAlignment="Center"/>
+                    <TextBox x:Name="cmpCrc32" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Column="2" Grid.Row="1" MaxLines="1" AutoWordSelection="True" IsUndoEnabled="False" CharacterCasing="{Binding IsChecked, Converter={StaticResource BoolToCharacterCasingConverter}, ElementName=rbUpper}" FontFamily="Consolas" TextChanged="cmp_TextChanged" />
+                    <TextBox x:Name="cmpCrc64" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Column="2" Grid.Row="2" MaxLines="1" AutoWordSelection="True" IsUndoEnabled="False" CharacterCasing="{Binding IsChecked, Converter={StaticResource BoolToCharacterCasingConverter}, ElementName=rbUpper}" FontFamily="Consolas" TextChanged="cmp_TextChanged" />
+                    <TextBox x:Name="cmpBlake2b" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Column="2" Grid.Row="3" MaxLines="1" AutoWordSelection="True" IsUndoEnabled="False" CharacterCasing="{Binding IsChecked, Converter={StaticResource BoolToCharacterCasingConverter}, ElementName=rbUpper}" FontFamily="Consolas" TextChanged="cmp_TextChanged" />
+                    <TextBox x:Name="cmpBlake2s" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Column="2" Grid.Row="4" MaxLines="1" AutoWordSelection="True" IsUndoEnabled="False" CharacterCasing="{Binding IsChecked, Converter={StaticResource BoolToCharacterCasingConverter}, ElementName=rbUpper}" FontFamily="Consolas" TextChanged="cmp_TextChanged" />
+                    <TextBox x:Name="cmpDstu7564_256" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Column="2" Grid.Row="5" MaxLines="1" AutoWordSelection="True" IsUndoEnabled="False" CharacterCasing="{Binding IsChecked, Converter={StaticResource BoolToCharacterCasingConverter}, ElementName=rbUpper}" FontFamily="Consolas" TextChanged="cmp_TextChanged" />
+                    <TextBox x:Name="cmpDstu7564_384" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Column="2" Grid.Row="6" MaxLines="1" AutoWordSelection="True" IsUndoEnabled="False" CharacterCasing="{Binding IsChecked, Converter={StaticResource BoolToCharacterCasingConverter}, ElementName=rbUpper}" FontFamily="Consolas" TextChanged="cmp_TextChanged" />
+                    <TextBox x:Name="cmpDstu7564_512" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Column="2" Grid.Row="7" MaxLines="1" AutoWordSelection="True" IsUndoEnabled="False" CharacterCasing="{Binding IsChecked, Converter={StaticResource BoolToCharacterCasingConverter}, ElementName=rbUpper}" FontFamily="Consolas" TextChanged="cmp_TextChanged" />
+                    <TextBox x:Name="cmpGost3411" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Column="2" Grid.Row="8" MaxLines="1" AutoWordSelection="True" IsUndoEnabled="False" CharacterCasing="{Binding IsChecked, Converter={StaticResource BoolToCharacterCasingConverter}, ElementName=rbUpper}" FontFamily="Consolas" TextChanged="cmp_TextChanged" />
+                    <TextBox x:Name="cmpKeccak" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Column="2" Grid.Row="9" MaxLines="1" AutoWordSelection="True" IsUndoEnabled="False" CharacterCasing="{Binding IsChecked, Converter={StaticResource BoolToCharacterCasingConverter}, ElementName=rbUpper}" FontFamily="Consolas" TextChanged="cmp_TextChanged" />
+                    <TextBox x:Name="cmpMd2" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Column="2" Grid.Row="10" MaxLines="1" AutoWordSelection="True" IsUndoEnabled="False" CharacterCasing="{Binding IsChecked, Converter={StaticResource BoolToCharacterCasingConverter}, ElementName=rbUpper}" FontFamily="Consolas" TextChanged="cmp_TextChanged" />
+                    <TextBox x:Name="cmpMd4" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Column="2" Grid.Row="11" MaxLines="1" AutoWordSelection="True" IsUndoEnabled="False" CharacterCasing="{Binding IsChecked, Converter={StaticResource BoolToCharacterCasingConverter}, ElementName=rbUpper}" FontFamily="Consolas" TextChanged="cmp_TextChanged" />
+                    <TextBox x:Name="cmpMd5" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Column="2" Grid.Row="12" MaxLines="1" AutoWordSelection="True" IsUndoEnabled="False" CharacterCasing="{Binding IsChecked, Converter={StaticResource BoolToCharacterCasingConverter}, ElementName=rbUpper}" FontFamily="Consolas" TextChanged="cmp_TextChanged" />
+                    <TextBox x:Name="cmpRipemd128" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Column="2" Grid.Row="13" MaxLines="1" AutoWordSelection="True" IsUndoEnabled="False" CharacterCasing="{Binding IsChecked, Converter={StaticResource BoolToCharacterCasingConverter}, ElementName=rbUpper}" FontFamily="Consolas" TextChanged="cmp_TextChanged" />
+                    <TextBox x:Name="cmpRipemd160" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Column="2" Grid.Row="14" MaxLines="1" AutoWordSelection="True" IsUndoEnabled="False" CharacterCasing="{Binding IsChecked, Converter={StaticResource BoolToCharacterCasingConverter}, ElementName=rbUpper}" FontFamily="Consolas" TextChanged="cmp_TextChanged" />
+                    <TextBox x:Name="cmpRipemd256" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Column="2" Grid.Row="15" MaxLines="1" AutoWordSelection="True" IsUndoEnabled="False" CharacterCasing="{Binding IsChecked, Converter={StaticResource BoolToCharacterCasingConverter}, ElementName=rbUpper}" FontFamily="Consolas" TextChanged="cmp_TextChanged" />
+                    <TextBox x:Name="cmpRipemd320" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Column="2" Grid.Row="16" MaxLines="1" AutoWordSelection="True" IsUndoEnabled="False" CharacterCasing="{Binding IsChecked, Converter={StaticResource BoolToCharacterCasingConverter}, ElementName=rbUpper}" FontFamily="Consolas" TextChanged="cmp_TextChanged" />
+                    <TextBox x:Name="cmpSha1" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Column="2" Grid.Row="17" MaxLines="1" AutoWordSelection="True" IsUndoEnabled="False" CharacterCasing="{Binding IsChecked, Converter={StaticResource BoolToCharacterCasingConverter}, ElementName=rbUpper}" FontFamily="Consolas" TextChanged="cmp_TextChanged" />
+                    <TextBox x:Name="cmpSha224" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Column="2" Grid.Row="18" MaxLines="1" AutoWordSelection="True" IsUndoEnabled="False" CharacterCasing="{Binding IsChecked, Converter={StaticResource BoolToCharacterCasingConverter}, ElementName=rbUpper}" FontFamily="Consolas" TextChanged="cmp_TextChanged" />
+                    <TextBox x:Name="cmpSha256" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Column="2" Grid.Row="19" MaxLines="1" AutoWordSelection="True" IsUndoEnabled="False" CharacterCasing="{Binding IsChecked, Converter={StaticResource BoolToCharacterCasingConverter}, ElementName=rbUpper}" FontFamily="Consolas" TextChanged="cmp_TextChanged" />
+                    <TextBox x:Name="cmpSha384" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Column="2" Grid.Row="20" MaxLines="1" AutoWordSelection="True" IsUndoEnabled="False" CharacterCasing="{Binding IsChecked, Converter={StaticResource BoolToCharacterCasingConverter}, ElementName=rbUpper}" FontFamily="Consolas" TextChanged="cmp_TextChanged" />
+                    <TextBox x:Name="cmpSha512" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Column="2" Grid.Row="21" MaxLines="1" AutoWordSelection="True" IsUndoEnabled="False" CharacterCasing="{Binding IsChecked, Converter={StaticResource BoolToCharacterCasingConverter}, ElementName=rbUpper}" FontFamily="Consolas" TextChanged="cmp_TextChanged" />
+                    <TextBox x:Name="cmpSha3" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Column="2" Grid.Row="22" MaxLines="1" AutoWordSelection="True" IsUndoEnabled="False" CharacterCasing="{Binding IsChecked, Converter={StaticResource BoolToCharacterCasingConverter}, ElementName=rbUpper}" FontFamily="Consolas" TextChanged="cmp_TextChanged" />
+                    <TextBox x:Name="cmpSm3" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Column="2" Grid.Row="23" MaxLines="1" AutoWordSelection="True" IsUndoEnabled="False" CharacterCasing="{Binding IsChecked, Converter={StaticResource BoolToCharacterCasingConverter}, ElementName=rbUpper}" FontFamily="Consolas" TextChanged="cmp_TextChanged" />
+                    <TextBox x:Name="cmpShake" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Column="2" Grid.Row="24" MaxLines="1" AutoWordSelection="True" IsUndoEnabled="False" CharacterCasing="{Binding IsChecked, Converter={StaticResource BoolToCharacterCasingConverter}, ElementName=rbUpper}" FontFamily="Consolas" TextChanged="cmp_TextChanged" />
+                    <TextBox x:Name="cmpTiger" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Column="2" Grid.Row="25" MaxLines="1" AutoWordSelection="True" IsUndoEnabled="False" CharacterCasing="{Binding IsChecked, Converter={StaticResource BoolToCharacterCasingConverter}, ElementName=rbUpper}" FontFamily="Consolas" TextChanged="cmp_TextChanged" />
+                    <TextBox x:Name="cmpWhirlpool" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Column="2" Grid.Row="26" MaxLines="1" AutoWordSelection="True" IsUndoEnabled="False" CharacterCasing="{Binding IsChecked, Converter={StaticResource BoolToCharacterCasingConverter}, ElementName=rbUpper}" FontFamily="Consolas" TextChanged="cmp_TextChanged" />
+                </Grid>
+            </ScrollViewer>
+        </GroupBox>
+    </Grid>
+</Window>
